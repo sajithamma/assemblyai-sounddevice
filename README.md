@@ -201,4 +201,9 @@ OSError: [Errno -9999] Unanticipated host error
 
 ```
 
+### Fix
+```bash
+I replaced pyaudio and poraudio with  CustomMicrophoneStream class using sounddevice
+
+```
 
