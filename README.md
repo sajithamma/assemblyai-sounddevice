@@ -154,3 +154,51 @@ class CustomMicrophoneStream:
             self.close()
 ```
 
+# A Set of issues
+##  I have faced in Mac M1 during the pyaudio and portaudio configuration.
+
+
+```bash
+1 error generated.
+      error: command '/usr/bin/clang' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for pyaudio
+Failed to build pyaudio
+```
+
+```bash
+An error occured: Could not connect to the real-time service: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1007)
+Could not import the PyAudio C module 'pyaudio._portaudio'.
+Traceback (most recent call last):
+  File "/Users/sajithmr/coding/assemblyai/venv/lib/python3.10/site-packages/assemblyai/extras.py", line 37, in __init__
+    import pyaudio
+  File "/Users/sajithmr/coding/assemblyai/venv/lib/python3.10/site-packages/pyaudio/__init__.py", line 111, in <module>
+    import pyaudio._portaudio as pa
+ImportError: dlopen(/Users/sajithmr/coding/assemblyai/venv/lib/python3.10/site-packages/pyaudio/_portaudio.cpython-310-darwin.so, 0x0002): symbol not found in flat namespace '_PaMacCore_SetupChannelMap'
+```
+
+### Fix
+```python
+import certifi
+import os
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+```
+
+```bash
+
+||PaMacCore (AUHAL)|| AUHAL component not found.Traceback (most recent call last):
+  File "app.py", line 18, in <module>
+    stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True)
+  File "/Users/sajithmr/miniconda3/envs/myconda/lib/python3.8/site-packages/pyaudio/__init__.py", line 639, in open
+    stream = PyAudio.Stream(self, *args, **kwargs)
+  File "/Users/sajithmr/miniconda3/envs/myconda/lib/python3.8/site-packages/pyaudio/__init__.py", line 441, in __init__
+    self._stream = pa.open(**arguments)
+OSError: [Errno -9999] Unanticipated host error
+
+```
+
+
